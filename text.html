@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tính tuổi và số ngày, tháng dư ra</title>
+</head>
+<body>
+    <label>Ngày:</label>
+    <input type="text" id="dayInput" placeholder="Ngày">
+    <label>Tháng:</label>
+    <input type="text" id="monthInput" placeholder="Tháng">
+    <label>Năm:</label>
+    <input type="text" id="yearInput" placeholder="Năm">
+    <button onclick="calculateAgeAndRemaining()">Tính tuổi và số ngày, tháng dư ra</button>
+    <p id="result"></p>
+    <script>
+        function calculateAgeAndRemaining() {
+            const day = parseInt(document.getElementById("dayInput").value);
+            const month = parseInt(document.getElementById("monthInput").value);
+            const year = parseInt(document.getElementById("yearInput").value);
+
+            if (isNaN(day) || isNaN(month) || isNaN(year)) {
+                document.getElementById("result").innerText = "Vui lòng nhập đầy đủ ngày, tháng và năm.";
+                return;
+            }
+            const today = new Date();
+            const birthDate = new Date(year, month - 1, day); // month -1 vì trong JavaScript các tháng sẽ tính từ 0 - 11
+            // Tính tuổi
+            let ageInYears = today.getFullYear() - birthDate.getFullYear();
+            const birthMonth = birthDate.getMonth();
+            const currentMonth = today.getMonth();
+            if (currentMonth < birthMonth || (currentMonth === birthMonth && today.getDate() < birthDate.getDate())) {
+                ageInYears--;
+            }
+            // Tính số ngày, tháng dư ra
+            birthDate.setFullYear(birthDate.getFullYear() + ageInYears);
+            const diffInMilliseconds = today - birthDate;
+            const diffDate = new Date(diffInMilliseconds);
+            const remainingMonths = diffDate.getMonth();
+            const remainingDays = diffDate.getDate() - 1;
+
+            document.getElementById("result").innerText = `Tuổi của bạn là ${ageInYears} tuổi, ${remainingMonths} tháng và ${remainingDays} ngày.`;
+        }
+    </script>
+</body>
+
+</html>
